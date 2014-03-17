@@ -1,4 +1,3 @@
-
 /* Triad Development Group
  * Battleship console game
  *
@@ -249,7 +248,6 @@ void NewGame ()
 			}
 			catch(int a){
 				y1 = -1;
-
 				cin.clear();
 				char junk;
 				cin>>junk;
@@ -258,13 +256,11 @@ void NewGame ()
 
 			try{
 				cin>>y2;
-
 				if(!cin)
 					throw 2;
 			}
 			catch(int a){
 				y2 = -1;
-
 				cin.clear();
 				string junk;
 				getline(cin,junk);
