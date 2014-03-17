@@ -158,55 +158,55 @@ int playGame(string name, char [10][10], char [10][10]);
  */
 //Struct Declaration:
 struct Placement{
-  int lengtharray [5];
-  char shiparray [5];
-  string shipnamearray [5]; 
-  int directionnumberarray [5];
+	int lengtharray [5];
+	char shiparray [5];
+	string shipnamearray [5];
+	int directionnumberarray [5];
 };
 
 //Welcome function when you first enter the game.
 void Welcome()
 {  char ch;
-   int choice; //=0;
+int choice; //=0;
 do{
-   cout << "\033[2J\033[1;1H";
+	cout << "\033[2J\033[1;1H";
 
-   cout<<"*******************************************************************"<<endl;
-   cout<<"                            BATTLESHIP                             "<<endl;
-   cout<<"*******************************************************************"<<endl;
-   cout<< endl <<endl;
-   cout<<"Please select one of the following choices:(Enter the corresponding number)"<<endl;
-   cout<<"1 - Start New Game"<<endl;
-   cout<<"2 - Load a Saved Game"<<endl;
-   cout<<"3 - View the Highscores List"<<endl;
-   cout<<"4 - Access the Help Guide"<<endl;
-   cout<<"5 - Quit"<<endl;
-   cout<<endl;
-   cout<<"Enter the number: ";
-   
-      
-      cin>>ch;
-      while(ch<'1'||ch>'5'){
-         cout<<"You have entered an invalid key, please try again."<<endl;
-         cout<<"Enter the number:";
-         cin>>ch;
-      }
-      choice=ch-48;
+	cout<<"*******************************************************************"<<endl;
+	cout<<"                            BATTLESHIP                             "<<endl;
+	cout<<"*******************************************************************"<<endl;
+	cout<< endl <<endl;
+	cout<<"Please select one of the following choices:(Enter the corresponding number)"<<endl;
+	cout<<"1 - Start New Game"<<endl;
+	cout<<"2 - Load a Saved Game"<<endl;
+	cout<<"3 - View the Highscores List"<<endl;
+	cout<<"4 - Access the Help Guide"<<endl;
+	cout<<"5 - Quit"<<endl;
+	cout<<endl;
+	cout<<"Enter the number: ";
 
-      if(choice==1){
-         NewGame();
-      }else if(choice==2){
-         LoadGame();
-      }else if(choice==3){
-         PrintHighScores();
-      }else if(choice==4){
-         PrintHelpGuide();
-      }else if(choice==5){
-         quitGame();
-      }else{
-         cout<<"You have invalid entry, Please try again."<<endl;
-      }
-   }while(choice != 5);
+
+	cin>>ch;
+	while(ch<'1'||ch>'5'){
+		cout<<"You have entered an invalid key, please try again."<<endl;
+		cout<<"Enter the number:";
+		cin>>ch;
+	}
+	choice=ch-48;
+
+	if(choice==1){
+		NewGame();
+	}else if(choice==2){
+		LoadGame();
+	}else if(choice==3){
+		PrintHighScores();
+	}else if(choice==4){
+		PrintHelpGuide();
+	}else if(choice==5){
+		quitGame();
+	}else{
+		cout<<"You have invalid entry, Please try again."<<endl;
+	}
+}while(choice != 5);
 
 }
 
@@ -214,153 +214,181 @@ do{
 //New Game function
 void NewGame ()
 {  
-   string name;
-   char usergrid[10][10];
-   char cpugrid[10][10];
-   bool istrue;
-   char x1, x2;
-   int y1,y2;
-   createGrid(usergrid);
-   createGrid(cpugrid);
-   cout<<"Please enter your first name (no spaces): ";
-   //cin>>name;
-   //gets (name);
-   cin.get();
-   getline (cin, name); 
+	string name;
+	char usergrid[10][10];
+	char cpugrid[10][10];
+	bool istrue;
+	char x1, x2;
+	int y1,y2;
+	createGrid(usergrid);
+	createGrid(cpugrid);
+	cout<<"Please enter your first name (no spaces): ";
+	//cin>>name;
+	//gets (name);
+	cin.get();
+	getline (cin, name);
 
-   printGrid(usergrid);
-   cout<<name<<", now please select the coordinates for your ships: "<<endl;
- 
-   Placement item={{5,4,3,3,2},
-                   {'C', 'B', 'D', 'S', 'P'},
-                   {"Aircraft Carrier", "Battleship", "Destroyer", "Submarine", "Patrol Boat"},
-                   {6,7,8,8,9}};
-   for(int z=0;z<5;z++){
-   do{
-      cout<<"Enter the start and ending coordinates for your ";
-      cout<< item.shipnamearray[z];
-      cout<<" ("<<item.lengtharray[z]<< " units long)."<<endl;
-      cout<<"Please enter in the format A1 A5 or A1 E1: ";
-      cin>>x1>>y1>>x2>>y2;
-      x1=toupper(x1);
-      x2=toupper(x2);
-      istrue=verifyPlacement(item.lengtharray[z], x1, y1, x2, y2, usergrid);
-      if(istrue==false)
-         cout<<"INVALID SHIP PLACEMENT, Please try again."<<endl;
-     }while(istrue==false);
-     if(x1==x2){
-       for(int i=y1;i<=y2; i++)
-          usergrid[i-1][x1-65]=item.shiparray[z];
-     }else{
-         for(int i=x1;i<=x2; i++)
-            usergrid[y1-1][i-65]=item.shiparray[z];
-      }
-      printGrid(usergrid);  
-      }
-cout<<"test1"<< endl;
-      RandomPlacement(cpugrid);
-cout<<"tets2"<<endl;
-      playGame(name, usergrid, cpugrid);
-cout<<"test3"<<endl;
+	printGrid(usergrid);
+	cout<<name<<", now please select the coordinates for your ships: "<<endl;
+
+	Placement item={{5,4,3,3,2},
+			{'C', 'B', 'D', 'S', 'P'},
+			{"Aircraft Carrier", "Battleship", "Destroyer", "Submarine", "Patrol Boat"},
+			{6,7,8,8,9}};
+	for(int z=0;z<5;z++){
+		do{
+			cout<<"Enter the start and ending coordinates for your ";
+			cout<< item.shipnamearray[z];
+			cout<<" ("<<item.lengtharray[z]<< " units long)."<<endl;
+			cout<<"Please enter in the format A1 A5 or A1 E1: ";
+			cin>>x1;
+			try{
+				cin>>y1;
+				if(!cin)
+					throw 1;
+			}
+			catch(int a){
+				y1 = -1;
+
+				cin.clear();
+				char junk;
+				cin>>junk;
+			}
+			cin>>x2;
+
+			try{
+				cin>>y2;
+
+				if(!cin)
+					throw 2;
+			}
+			catch(int a){
+				y2 = -1;
+
+				cin.clear();
+				string junk;
+				getline(cin,junk);
+			}
+			x1=toupper(x1);
+			x2=toupper(x2);
+			cout<<x1<<y1<<x2<<y2<<endl;
+			istrue=verifyPlacement(item.lengtharray[z], x1, y1, x2, y2, usergrid);
+			if(istrue==false)
+				cout<<"INVALID SHIP PLACEMENT, Please try again."<<endl;
+		}while(istrue==false);
+		if(x1==x2){
+			for(int i=y1;i<=y2; i++)
+				usergrid[i-1][x1-65]=item.shiparray[z];
+		}else{
+			for(int i=x1;i<=x2; i++)
+				usergrid[y1-1][i-65]=item.shiparray[z];
+		}
+		printGrid(usergrid);
+	}
+	cout<<"test1"<< endl;
+	RandomPlacement(cpugrid);
+	cout<<"tets2"<<endl;
+	playGame(name, usergrid, cpugrid);
+	cout<<"test3"<<endl;
 }
 
 bool verifyPlacement (int length, char x1, int y1, char x2, int y2, char usergrid[10][10])
 {  if(!(x1>=65&&x1<=74) && !(x2>=65&&x2<=74)){
-       return false;
-   }else if(!(y1>=1&&y1<=10) && !(y2>=1&&y2<=10)){
-      return false;
-   }else if(x1!=x2 && y1!=y2){
-      return false;
-   }else if(x1==x2 && (y2-y1+1)!=length){
-      return false;
-   }else if(y1==y2 && (x2-x1+1)!=length){
-      return false;
-   }else if(x1==x2){
-      for(int i=y1; i<=y2; i++){
-         if(usergrid[i-1][x1-65]!='.'){
-            return false;
-         }
-      }
-    return true;
-   }else if(y1==y2){
-       for(int i=x1;i<=x2;i++){
-          if(usergrid[y1-1][i-65]!='.'){
-             return false;
-          }
-       }
-    return true;
-   }
-   else
-      return true;
+	return false;
+}else if(!(y1>=1&&y1<=10) && !(y2>=1&&y2<=10)){
+	return false;
+}else if(x1!=x2 && y1!=y2){
+	return false;
+}else if(x1==x2 && (y2-y1+1)!=length){
+	return false;
+}else if(y1==y2 && (x2-x1+1)!=length){
+	return false;
+}else if(x1==x2){
+	for(int i=y1; i<=y2; i++){
+		if(usergrid[i-1][x1-65]!='.'){
+			return false;
+		}
+	}
+	return true;
+}else if(y1==y2){
+	for(int i=x1;i<=x2;i++){
+		if(usergrid[y1-1][i-65]!='.'){
+			return false;
+		}
+	}
+	return true;
 }
- 
+else
+	return true;
+}
+
 
 void RandomPlacement(char cpugrid[10][10])
 {  
-   bool istrue;
-   char x1, x2;
-   int y1,y2;
-   int direction;
-   Placement item={{5,4,3,3,2},
-                   {'C', 'B', 'D', 'S', 'P'},
-                   {"Aircraft Carrier", "Battleship", "Destroyer", "Submarine", "Patrol Boat"},
-                   {6,7,8,8,9}};
-   //direction = rand() % 2 + 5;//choose a direction either vertical or horizontal
-  for(int z=0;z<5;z++){
-  do{
-      //srand (time(0));
-      x1=rand() %item.directionnumberarray[z] + 65;
-      y1=rand() %item.directionnumberarray[z];
-      direction = rand() % 2 + 5;
-      if(direction==5){
-         y2=y1+(item.lengtharray[z]-1);
-         x2=x1;
-      }else if(direction==6){
-         x2=x1+(item.lengtharray[z]-1);
-         y2=y1;
-      }
-      istrue=verifyPlacement(item.lengtharray[z], x1, y1, x2, y2, cpugrid);
-     }while(istrue==false); 
-     if(x1==x2){
-       for(int i=y1;i<=y2; i++)
-          cpugrid[i-1][x1-65]=item.shiparray[z];
-     }else{
-         for(int i=x1;i<=x2; i++)
-            cpugrid[y1-1][i-65]=item.shiparray[z];
-      }
-   }
+	bool istrue;
+	char x1, x2;
+	int y1,y2;
+	int direction;
+	Placement item={{5,4,3,3,2},
+			{'C', 'B', 'D', 'S', 'P'},
+			{"Aircraft Carrier", "Battleship", "Destroyer", "Submarine", "Patrol Boat"},
+			{6,7,8,8,9}};
+	//direction = rand() % 2 + 5;//choose a direction either vertical or horizontal
+	for(int z=0;z<5;z++){
+		do{
+			//srand (time(0));
+			x1=rand() %item.directionnumberarray[z] + 65;
+			y1=rand() %item.directionnumberarray[z];
+			direction = rand() % 2 + 5;
+			if(direction==5){
+				y2=y1+(item.lengtharray[z]-1);
+				x2=x1;
+			}else if(direction==6){
+				x2=x1+(item.lengtharray[z]-1);
+				y2=y1;
+			}
+			istrue=verifyPlacement(item.lengtharray[z], x1, y1, x2, y2, cpugrid);
+		}while(istrue==false);
+		if(x1==x2){
+			for(int i=y1;i<=y2; i++)
+				cpugrid[i-1][x1-65]=item.shiparray[z];
+		}else{
+			for(int i=x1;i<=x2; i++)
+				cpugrid[y1-1][i-65]=item.shiparray[z];
+		}
+	}
 }
 
 void LoadGame()
 {
-   string name;
-   char usergrid[10][10];
-   char cpugrid[10][10];
-  
-   ifstream file;
-   file.open("saved.txt");
-   file>>name;
-   if(file.eof()){
-     cout<<"There is no saved game. Please start a new game."<<endl;
-     //press any key to return to game play
-     string discardstr;
-     cout << endl << "Press any key to return to the main menu: " ;
-     cin>>discardstr;
-     //cin.get(discardstr);
-     cin.ignore();
-     //cin >> discardstr;
-   }else{       
-   for(int i=0; i<10; i++){
-      for(int j=0; j<10; j++){
-          file>>usergrid[i][j];
-      }
-   }
-   for(int i=0; i<10; i++){
-      for(int j=0; j<10; j++){
-          file>>cpugrid[i][j];
-      }
-   }
+	string name;
+	char usergrid[10][10];
+	char cpugrid[10][10];
 
-   playGame(name,usergrid,cpugrid);
-   }
+	ifstream file;
+	file.open("saved.txt");
+	file>>name;
+	if(file.eof()){
+		cout<<"There is no saved game. Please start a new game."<<endl;
+		//press any key to return to game play
+		string discardstr;
+		cout << endl << "Press any key to return to the main menu: " ;
+		cin>>discardstr;
+		//cin.get(discardstr);
+		cin.ignore();
+		//cin >> discardstr;
+	}else{
+		for(int i=0; i<10; i++){
+			for(int j=0; j<10; j++){
+				file>>usergrid[i][j];
+			}
+		}
+		for(int i=0; i<10; i++){
+			for(int j=0; j<10; j++){
+				file>>cpugrid[i][j];
+			}
+		}
+
+		playGame(name,usergrid,cpugrid);
+	}
 }
