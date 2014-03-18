@@ -2,7 +2,7 @@
 Triad Development Group
 Battleship console game
 Module 2 - Gameplay Module
-*/
+ */
 
 
 /*
@@ -14,7 +14,7 @@ For the purposes of calculating the player's score, we will use the following pr
 -each time the player gets a hit, they get 10 points
 -each time the player sinks a ship, they get points equal to the ship bonus (10x the length of the ship)
 -at the end of the game, the player's score is multiplied by 100% plus their hit percentage (eg. *175% for a hit percentage of 75%)
-*/
+ */
 
 
 //Included Libraries
@@ -43,8 +43,8 @@ Pre-: expects to be given a string containing the player's name, as well as the 
 	which probably contain letters for ships, hits, and misses
 Post-: the file is written in the game directory and contains all of the information the function
 	was passed. After the function is called, the program terminates.
-*/
-void saveGame(string, grid, grid);
+ */
+void saveGame(string, char[10][10], char[10][10]);
 
 //Class Declarations
 
@@ -53,19 +53,19 @@ Description: The ship class is the class that defines all of the ship objects.
 	It contains their member variables, which describe properties the ships should have.
 	It also defines the member functions to access these properties and manage basic operation
 		of the ship objects.
-*/
+ */
 class ship{
 private:
-   int health;//number of units not hit yet
-   int length;
-   bool isSunk;//whether or not all units have been hit
+	int health;//number of units not hit yet
+	int length;
+	bool isSunk;//whether or not all units have been hit
 
 public:
-   void setHealth(int);
-   int checkHealth();
-   void setSunk(bool);
-   bool checkSunk();
-   void hit();
+	void setHealth(int);
+	int checkHealth();
+	void setSunk(bool);
+	bool checkSunk();
+	void hit();
 };
 
 /*class player
@@ -74,7 +74,7 @@ Description: The player class is the class that defines both player objects.
 		their stats such as score and hit percentage.
 	It also defines the member functions to access these properties and manage basic operation
 		of the player objects.
-*/
+ */
 class player{
 private:
 	int type;//what kind of user? 0 for cpu. 1 for human.
@@ -91,8 +91,8 @@ public:
 	void setHealth(int);
 	int checkHealth();
 	void decrementHealth();
-	char takeTurn(string, grid, grid, grid, grid);
-	bool verifyShot(string, grid, grid, grid, char, int);
+	char takeTurn(string, char [10][10], char [10][10], char [10][10], char [10][10]);
+	bool verifyShot(string, char [10][10], char [10][10], char [10][10], char, int);
 	void addScore(int);
 	int checkScore();
 	void setScore(int);
@@ -111,7 +111,7 @@ public:
 
 //BEGIN LOAD-GAME FUNCTIONALITY
 
-int playGame(string name, grid usergrid, grid cpugrid){
+int playGame(string name, char usergrid[10][10], char cpugrid[10][10]){
 
 	//declare base objects
 	player user, cpu;
@@ -134,15 +134,15 @@ int playGame(string name, grid usergrid, grid cpugrid){
 
 	//loop to count instances in both grids
 	for(int i=0;i<10;i++){
-	   for(int j=0;j<10;j++){
-	      if(cpugrid[i][j]=='M'){//if the player missed at this spot
+		for(int j=0;j<10;j++){
+			if(cpugrid[i][j]=='M'){//if the player missed at this spot
 				userview[i][j]='M';
 				unumM++;
-	      }
-	      else if(cpugrid[i][j]=='X'){//if the player hit at this spot
-	         userview[i][j]='X';
+			}
+			else if(cpugrid[i][j]=='X'){//if the player hit at this spot
+				userview[i][j]='X';
 				unumX++;
-	      }
+			}
 			else if(cpugrid[i][j]=='C'){//if the cpu has an aircraft carrier here
 				cnumC++;
 			}
@@ -179,7 +179,7 @@ int playGame(string name, grid usergrid, grid cpugrid){
 			else if(usergrid[i][j]=='P'){//" patrol boat
 				unumP++;
 			}
-	   }
+		}
 	}
 
 	//set ships health
@@ -199,7 +199,7 @@ int playGame(string name, grid usergrid, grid cpugrid){
 	cout<<"*******************************************************************"<<endl;
 	cout<<"                            BATTLESHIP                             "<<endl;
 	cout<<"*******************************************************************"<<endl;
-  	cout<< endl <<endl;
+	cout<< endl <<endl;
 	printGrid(userview);
 	cout << "-------------------------------------------------------------------" << endl;
 	printGrid(usergrid);
@@ -249,10 +249,10 @@ int playGame(string name, grid usergrid, grid cpugrid){
 	while(user.checkHealth() > 0 && cpu.checkHealth() > 0){//while both players are still alive
 
 
-	selected = user.takeTurn(name, usergrid, cpugrid, cpugrid, userview);//take the human player's turn and save the letter at the position they select
+		selected = user.takeTurn(name, usergrid, cpugrid, cpugrid, userview);//take the human player's turn and save the letter at the position they select
 
-	//decide if the selection is a hit or a miss, and update the appropriate ship and player health and score
-	switch(selected){
+		//decide if the selection is a hit or a miss, and update the appropriate ship and player health and score
+		switch(selected){
 		case '.':
 			cout << "MISS!" << endl;
 			break;
@@ -314,39 +314,39 @@ int playGame(string name, grid usergrid, grid cpugrid){
 				cout << "You have sunk the opponent's Patrol Boat!" << endl;
 				cpuPat.setSunk(true);
 				user.addScore(20);
-				}
+			}
 			break;
 		default:
 			cout << "OH NO SOMETHING WENT TERRIBLY WRONG!" << endl;//<----- This actually helped us locate several errors :)
 			break;
-	}
-	printGrid(userview);//print to the screen the human player's view at the end of their turn
+		}
+		printGrid(userview);//print to the screen the human player's view at the end of their turn
 
-	//check if the player won on their last turn
-	if(cpu.checkHealth()==0){
-	cout << "Congratulations! You have won the game!" << endl;
-	cout << "\tYour stats were: " << endl;
-	cout << "\t\t" << user.checkShots() << " total shots" << endl;
-	cout << "\t\t" << user.checkHits() << " hits" << endl;
-	cout << "\t\t" << user.checkShots()-user.checkHits() << " misses" << endl;
-	user.genScore();
-	cout << "\tResulting in a hit percentage of " << setprecision(2) << user.checkPercent() << "%" << endl;
-	cout << "\tYou achieved a score of " << user.checkScore() << "!" << endl;
-	//if the player won on their last turn, initiate end-game procedure, including generating their final score
-	ofstream highscores;
-	highscores.open("highscores.txt", ios::app);
-	highscores << user.checkScore() << " " << name;
-	highscores.close();
+		//check if the player won on their last turn
+		if(cpu.checkHealth()==0){
+			cout << "Congratulations! You have won the game!" << endl;
+			cout << "\tYour stats were: " << endl;
+			cout << "\t\t" << user.checkShots() << " total shots" << endl;
+			cout << "\t\t" << user.checkHits() << " hits" << endl;
+			cout << "\t\t" << user.checkShots()-user.checkHits() << " misses" << endl;
+			user.genScore();
+			cout << "\tResulting in a hit percentage of " << setprecision(2) << user.checkPercent() << "%" << endl;
+			cout << "\tYou achieved a score of " << user.checkScore() << "!" << endl;
+			//if the player won on their last turn, initiate end-game procedure, including generating their final score
+			ofstream highscores;
+			highscores.open("highscores.txt", ios::app);
+			highscores << user.checkScore() << " " << name;
+			highscores.close();
 
-	cout << "Press any key to continue!" << endl;
-	cin >> discardstr;
-	return 1;
-	}
+			cout << "Press any key to continue!" << endl;
+			cin >> discardstr;
+			return 1;
+		}
 
-	selected2 = cpu.takeTurn(name, usergrid, cpugrid, usergrid, userview);//take the computer player's turn and save the randomly selection position
+		selected2 = cpu.takeTurn(name, usergrid, cpugrid, usergrid, userview);//take the computer player's turn and save the randomly selection position
 
-	//decide if the selection is a hit or a miss, and update the appropriate ship and player health and score
-	switch(selected2){
+		//decide if the selection is a hit or a miss, and update the appropriate ship and player health and score
+		switch(selected2){
 		case '.':
 			cout << "MISS!" << endl;
 			break;
@@ -413,16 +413,16 @@ int playGame(string name, grid usergrid, grid cpugrid){
 		default:
 			cout << "OH NO SOMETHING WENT TERRIBLY WRONG!" << endl;//<----- This actually helped us locate several errors :)
 			break;
-	}
-	printGrid(usergrid);//print to the screen the human player's view of the computer opponent's grid (i.e. only their own hits/misses)
+		}
+		printGrid(usergrid);//print to the screen the human player's view of the computer opponent's grid (i.e. only their own hits/misses)
 
-	//check if the human player lost on the computer's last turn, and if so, initiate end-game procedure
-	if(user.checkHealth()==0){
-		cout << "Oh no! You have lost the game!" << endl;
-		cout << "Press any key to continue!" << endl;
-		cin >> discardstr;
-		return 0;
-	}
+		//check if the human player lost on the computer's last turn, and if so, initiate end-game procedure
+		if(user.checkHealth()==0){
+			cout << "Oh no! You have lost the game!" << endl;
+			cout << "Press any key to continue!" << endl;
+			cin >> discardstr;
+			return 0;
+		}
 
 	}
 	return 0;
@@ -554,10 +554,10 @@ Pre-: It expects the player object's name on which it is being called (because s
 Post-: The player object's turn will have effectively been taken, they will have been prompted for a position to fire at
 	(or one will have been randomly generated in the case of the computer), and a HIT (X) or MISS (X) will be placed on the
 	appropriate grid.
-*/
+ */
 char player::takeTurn(string name, char usergrid[10][10], char cpugrid[10][10], char grid[10][10], char view[10][10]){
 	char x;
-	int y;
+	int y=-1;
 	char selected;
 
 	if(type==1){
@@ -566,59 +566,81 @@ char player::takeTurn(string name, char usergrid[10][10], char cpugrid[10][10], 
 		cin >> x;
 
 		while(x=='?'||x=='S'||x=='Q'){
-		//if statement here for help guide
-		if(x=='?'){
+			//if statement here for help guide
+			if(x=='?'){
 
-		PrintHelpGuide();
+				PrintHelpGuide();
+				cout << "\033[2J\033[1;1H";
+				cout<<"*******************************************************************"<<endl;
+				cout<<"                            BATTLESHIP                             "<<endl;
+				cout<<"*******************************************************************"<<endl;
+				cout<< endl <<endl;
+				printGrid(view);
+				cout << "-------------------------------------------------------------------" << endl;
+				printGrid(usergrid);
+				cout << "Please choose a position to fire at (in the form A1): ";
+				//cin >> x >> y;
+			}
+			else if(toupper(x)=='S'){
+				saveGame(name, usergrid, cpugrid);
+			}
+			else if(toupper(x)=='Q'){
+				char response;
+				cout << "Would you like to save the game first (Y/N)? ";
+				cin >> response;
+				while(toupper(response) != 'Y' && toupper(response) != 'N'){
+					cout << "Please enter Y or N!" << endl;
+					cout << "Would you like to save the game first (Y/N)? ";
+					cin >> response;
+				}
+				if(toupper(response)=='Y'){
+					saveGame(name, usergrid, cpugrid);
+				}
+				else{
+					quitGame();
+				}
+			}
+			cin >> x;
+		}
+
+		while(y == -1){
+			try{
+				cin >> y;
+				if(!cin)
+					throw 1;
+			}
+			catch (int a){
+				y = -1;
+				cin.clear();
+				string junk;
+				getline(cin,junk);
+			}
+		}
+		x=toupper(x);
+		while(verifyShot(name, usergrid, cpugrid, view, x, y)==false){
+			cout << "INVALID POSITION!" << endl << "Please choose a position to fire at (in the form A1): ";
+			cin >> x;
+			x=toupper(x);
+			try{
+				cin>> y;
+				if(!cin)
+					throw 2;
+			}
+			catch (int a){
+				y = -1;
+				cin.clear();
+				string junk;
+				getline(cin,junk);
+			}
+		}
+
 		cout << "\033[2J\033[1;1H";
 		cout<<"*******************************************************************"<<endl;
 		cout<<"                            BATTLESHIP                             "<<endl;
 		cout<<"*******************************************************************"<<endl;
-	  	cout<< endl <<endl;
-		printGrid(view);
-		cout << "-------------------------------------------------------------------" << endl;
-		printGrid(usergrid);
-		cout << "Please choose a position to fire at (in the form A1): ";
-		//cin >> x >> y;
-		}
-		else if(toupper(x)=='S'){
-			saveGame(name, usergrid, cpugrid);
-		}
-		else if(toupper(x)=='Q'){
-			char response;
-			cout << "Would you like to save the game first (Y/N)? ";
-			cin >> response;
-			while(toupper(response) != 'Y' && toupper(response) != 'N'){
-				cout << "Please enter Y or N!" << endl;
-				cout << "Would you like to save the game first (Y/N)? ";
-				cin >> response;
-			}
-			if(toupper(response)=='Y'){
-				saveGame(name, usergrid, cpugrid);
-			}
-			else{
-				quitGame();
-			}
-		}
-			cin >> x;
-		}
-		
-		cin >> y;
-
-		x=toupper(x);
-		while(verifyShot(name, usergrid, cpugrid, view, x, y)==false){
-		cout << "INVALID POSITION!" << endl << "Please choose a position to fire at (in the form A1): ";
-		cin >> x >> y;
-		x=toupper(x);
-		}
-
-   cout << "\033[2J\033[1;1H";
-	cout<<"*******************************************************************"<<endl;
-	cout<<"                            BATTLESHIP                             "<<endl;
-	cout<<"*******************************************************************"<<endl;
-  	cout<< endl <<endl;
-	cout << "You fired at " << x << y << "... ";
-	incrementShots();
+		cout<< endl <<endl;
+		cout << "You fired at " << x << y << "... ";
+		incrementShots();
 
 	}
 	else{
@@ -651,7 +673,7 @@ Pre-: It expects the player object's name (since saveGame is called from here), 
 	of the position that has been selected to fire at.
 Post-: It returns true if the position is valid to fire at (i.e. is on the grid and has not been fired at before).
 	It returns false if the position is not valid to fire at (i.e. is off the grid or has been fired at before).
-*/
+ */
 bool player::verifyShot(string name, char usergrid[10][10], char cpugrid[10][10], char grid[10][10], char x, int y){
 
 	if(!(x>=65 && x<=74)){
@@ -664,11 +686,12 @@ bool player::verifyShot(string name, char usergrid[10][10], char cpugrid[10][10]
 		return false;
 	}
 	else if(grid[y-1][x-65]=='M'){
+
 		return false;
 	}
 	else
 		return true;
-	}
+}
 
 /*saveGame
 Description: saveGame is responsible for writing the current game-state information to a file in the game directory.
@@ -676,25 +699,25 @@ Pre-: It expects the player object's name and both the usergrid and cpugrid, all
 	the game directory called "saved.txt". The format is name/usergrid/cpugrid where / is a line break.
 Post-: It returns nothing, but the file will be written in the game directory, ready to be loaded at a later date if
 	the user so chooses. When this function is called, and after it has saved the game, the program terminates.
-*/
+ */
 void saveGame(string name, char usergrid[10][10], char cpugrid[10][10]){
 	ofstream saved;
 	saved.open("saved.txt", ios::trunc);
 	saved << name << endl;
-    
-   for(int i=0; i<10; i++){
-      for(int j=0; j<10; j++){
-          saved << usergrid[i][j] << " ";
-      }
-      saved<<endl;
-   }
+
+	for(int i=0; i<10; i++){
+		for(int j=0; j<10; j++){
+			saved << usergrid[i][j] << " ";
+		}
+		saved<<endl;
+	}
 	cout << endl;
 	for(int i=0; i<10; i++){
-      for(int j=0; j<10; j++){
-          saved << cpugrid[i][j] << " ";
-      }
-      saved<<endl;
-   }
+		for(int j=0; j<10; j++){
+			saved << cpugrid[i][j] << " ";
+		}
+		saved<<endl;
+	}
 	saved.close();
 	quitGame();
 }
