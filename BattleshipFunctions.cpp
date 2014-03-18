@@ -1,4 +1,3 @@
-
 /* Triad Development Group
  * Battleship console game
  *
@@ -244,9 +243,36 @@ void NewGame ()
       cout<< item.shipnamearray[z];
       cout<<" ("<<item.lengtharray[z]<< " units long)."<<endl;
       cout<<"Please enter in the format A1 A5 or A1 E1: ";
-      cin>>x1>>y1>>x2>>y2;
-      x1=toupper(x1);
-      x2=toupper(x2);
+      cin>>x1;
+			try{
+				cin>>y1;
+				if(!cin)
+					throw 1;
+			}
+			catch(int a){
+				y1 = -1;
+
+				cin.clear();
+				char junk;
+				cin>>junk;
+			}
+			cin>>x2;
+
+			try{
+				cin>>y2;
+
+				if(!cin)
+					throw 2;
+			}
+			catch(int a){
+				y2 = -1;
+
+				cin.clear();
+				string junk;
+				getline(cin,junk);
+			}
+			x1=toupper(x1);
+			x2=toupper(x2);
       istrue=verifyPlacement(item.lengtharray[z], x1, y1, x2, y2, usergrid);
       if(istrue==false)
          cout<<"INVALID SHIP PLACEMENT, Please try again."<<endl;
