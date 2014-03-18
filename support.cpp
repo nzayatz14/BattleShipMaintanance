@@ -17,6 +17,9 @@
 #include <iomanip>
 #include <fstream>
 #include <cstdlib>
+
+typedef char grid [10][10];
+
 using namespace std;
 /* createGrid:
  *
@@ -29,7 +32,7 @@ using namespace std;
  * value.  
  *
  */
-void createGrid (char grid[10][10])
+void createGrid (grid grid)
 {
    
    for(int i=0; i<10; i++){
@@ -50,7 +53,7 @@ void createGrid (char grid[10][10])
  * Post-Condition:The function correctly prints the grid to the screen.
  *
  */
-void printGrid(char grid[10][10])
+void printGrid(grid grid)
 {
    cout<<"   A B C D E F G H I J"<<endl;
    int x=1;

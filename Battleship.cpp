@@ -15,6 +15,12 @@
 #include"BattleshipFunctions.cpp"
 #include"module2Main.cpp"
 
+const int NUMBER_OF_SHIPS = 5;
+const int MIN_COL_LABEL = 'A';
+const int MAX_COL_LABEL = 'J';
+const int MIN_ROW_LABEL = 1;
+const int MAX_ROW_LABEL = 10;
+
 //#include"module2Main.cpp"
 using namespace std;
 
