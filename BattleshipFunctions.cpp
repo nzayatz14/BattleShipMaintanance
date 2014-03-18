@@ -305,7 +305,7 @@ void NewGame() {
 			default:
 				cout<<endl;
 			}
-		} while (istrue == 1||2||3||4||5||6);
+		} while (istrue != 0);
 		if (x1 == x2) {
 			if (y1 < y2) {
 				for (int i = y1; i <= y2; i++)
@@ -369,26 +369,26 @@ int verifyPlacement(int length, char x1, int y1, char x2, int y2,
 				}
 			}
 		}
-		return true;
+		return 0;
 	}
 	//false case 7: check if it's over lapped
 	else if (y1 == y2) {
 		if (x1 < x2) {
 			for (int i = x1; i <= x2; i++) {
 				if (usergrid[y1 - MIN_ROW_LABEL][i - MIN_COL_LABEL] != '.') {
-					return false;
+					return 6;
 				}
 			}
 		} else {
 			for (int i = x2; i >= x1; i--) {
 				if (usergrid[y1 - MIN_ROW_LABEL][i - MIN_COL_LABEL] != '.') {
-					return false;
+					return 6;
 				}
 			}
 		}
-		return true;
+		return 0;
 	} else
-		return true;
+		return 0;
 }
 
 void RandomPlacement(grid cpugrid) {
