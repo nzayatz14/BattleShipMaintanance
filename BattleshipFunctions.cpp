@@ -238,7 +238,6 @@ void NewGame() {
 	cin.get();
 	getline(cin, name);
 
-<<<<<<< HEAD
 	printGrid(usergrid);
 	cout << name << ", now please select the coordinates for your ships: "
 			<< endl;
@@ -253,22 +252,6 @@ void NewGame() {
 			cout << " (" << item.lengtharray[z] << " units long)." << endl;
 			cout << "Please enter in the format A1 A5 or A1 E1: ";
 			cin>>x1;
-=======
-   printGrid(usergrid);
-   cout<<name<<", now please select the coordinates for your ships: "<<endl;
- 
-   Placement item={{5,4,3,3,2},
-                   {'C', 'B', 'D', 'S', 'P'},
-                   {"Aircraft Carrier", "Battleship", "Destroyer", "Submarine", "Patrol Boat"},
-                   {6,7,8,8,9}};
-   for(int z=0;z<5;z++){
-   do{
-      cout<<"Enter the start and ending coordinates for your ";
-      cout<< item.shipnamearray[z];
-      cout<<" ("<<item.lengtharray[z]<< " units long)."<<endl;
-      cout<<"Please enter in the format A1 A5 or A1 E1: ";
-      cin>>x1;
->>>>>>> FETCH_HEAD
 			try{
 				cin>>y1;
 				if(!cin)
@@ -298,7 +281,6 @@ void NewGame() {
 			}
 			x1=toupper(x1);
 			x2=toupper(x2);
-<<<<<<< HEAD
 			istrue = verifyPlacement(item.lengtharray[z], x1, y1, x2, y2,
 					usergrid);
 			switch(istrue){
@@ -348,38 +330,6 @@ void NewGame() {
 	cout << "tets2" << endl;
 	playGame(name, usergrid, cpugrid);
 	cout << "test3" << endl;
-=======
-      istrue=verifyPlacement(item.lengtharray[z], x1, y1, x2, y2, usergrid);
-      if(istrue==false)
-         cout<<"INVALID SHIP PLACEMENT, Please try again."<<endl;
-     }while(istrue==false);
-     if(x1==x2){
-    	 if(y1<y2){
-    		 for(int i=y1;i<=y2; i++)
-    			 usergrid[i-1][x1-65]=item.shiparray[z];
-    	 }
-    	 else{
-    		 for(int i=y1;i>=y2;i--)
-    			 usergrid[i-1][x1-65]=item.shiparray[z];
-    	 }
-     }else{
-    	 if(x1<x2){
-    		 for(int i=x1;i<=x2; i++)
-    			 usergrid[y1-1][i-65]=item.shiparray[z];
-    	 }
-    	 else{
-    		 for(int i=x1;i>=x2;i--)
-    			 usergrid[y1-1][i-65]=item.shiparray[z];
-    	 }
-      }
-      printGrid(usergrid);  
-      }
-cout<<"test1"<< endl;
-      RandomPlacement(cpugrid);
-cout<<"tets2"<<endl;
-      playGame(name, usergrid, cpugrid);
-cout<<"test3"<<endl;
->>>>>>> FETCH_HEAD
 }
 
 int verifyPlacement(int length, char x1, int y1, char x2, int y2,
