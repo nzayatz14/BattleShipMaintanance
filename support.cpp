@@ -18,7 +18,13 @@
 #include <fstream>
 #include <cstdlib>
 
-typedef char grid [10][10];
+const int NUMBER_OF_SHIPS = 5;
+const int MIN_COL_LABEL = 'A';
+const int MAX_COL_LABEL = 'J';
+const int MIN_ROW_LABEL = 1;
+const int MAX_ROW_LABEL = 10;
+
+typedef char grid[MAX_ROW_LABEL][MAX_ROW_LABEL];
 
 using namespace std;
 /* createGrid:
@@ -32,14 +38,13 @@ using namespace std;
  * value.  
  *
  */
-void createGrid (grid grid)
-{
-   
-   for(int i=0; i<10; i++){
-      for(int j=0; j<10; j++){
-          grid[i][j]='.';
-      }
-   }
+void createGrid(grid grid) {
+
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 10; j++) {
+			grid[i][j] = '.';
+		}
+	}
 
 }
 /*printGrid:
@@ -53,23 +58,21 @@ void createGrid (grid grid)
  * Post-Condition:The function correctly prints the grid to the screen.
  *
  */
-void printGrid(grid grid)
-{
-   cout<<"   A B C D E F G H I J"<<endl;
-   int x=1;
+void printGrid(grid grid) {
+	cout << "   A B C D E F G H I J" << endl;
+	int x = 1;
 
-    
-   for(int i=0; i<10; i++){
-      if(x<10){
-         cout<<" ";
-      }
-      cout<<x;
-      x++;
-      for(int j=0; j<10; j++){
-          cout<<" "<<grid[i][j];
-      }
-      cout<<endl;
-   }
+	for (int i = 0; i < 10; i++) {
+		if (x < 10) {
+			cout << " ";
+		}
+		cout << x;
+		x++;
+		for (int j = 0; j < 10; j++) {
+			cout << " " << grid[i][j];
+		}
+		cout << endl;
+	}
 }
 /*quitGame:
  *
@@ -81,13 +84,18 @@ void printGrid(grid grid)
  * Post-Condition: The program has been exited.
  *
  */
-void quitGame()
-{
-    cout << "\033[2J\033[1;1H";
-         cout<<"*******************************************************************"<<endl;
-         cout<<"                            BATTLESHIP                             "<<endl;
-         cout<<"*******************************************************************"<<endl;
-         cout<< endl <<endl;
-         cout<<"Thanks for playing Battleship!"<<endl;
-         exit(0);
+void quitGame() {
+	//system("clear");
+	cout
+			<< "*******************************************************************"
+			<< endl;
+	cout
+			<< "                            BATTLESHIP                             "
+			<< endl;
+	cout
+			<< "*******************************************************************"
+			<< endl;
+	cout << endl << endl;
+	cout << "Thanks for playing Battleship!" << endl;
+	exit(0);
 }
